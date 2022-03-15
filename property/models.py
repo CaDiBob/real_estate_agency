@@ -6,11 +6,6 @@ from django.contrib.auth.models import User
 
 
 class Flat(models.Model):
-    owner = models.CharField('ФИО владельца', max_length=200)
-    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
-    owner_pure_phone = PhoneNumberField(
-        verbose_name='Нормализованный номер владельца', blank=True, region='RU'
-    )
     created_at = models.DateTimeField(
         'Когда создано объявление',
         default=timezone.now,
@@ -75,13 +70,13 @@ class Claim(models.Model):
 
 
 class Owner(models.Model):
-    owner = models.CharField('ФИО владельца', max_length=200)
-    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    owner = models.CharField('ФИО владельца', max_length=200, db_index=True)
+    owners_phonenumber = models.CharField('Номер владельца', max_length=20, db_index=True)
     owner_pure_phone = PhoneNumberField(
-        verbose_name='Нормализованный номер владельца', blank=True, region='RU'
+        verbose_name='Нормализованный номер владельца', blank=True, region='RU', db_index=True
     )
     flats = models.ManyToManyField(
-        Flat, verbose_name='Квартиры в собственности', related_name='apartments'
+        Flat, verbose_name='Квартиры в собственности', related_name='apartments', db_index=True
     )
 
     def __str__(self):
