@@ -72,3 +72,17 @@ class Claim(models.Model):
 
     def __str__(self):
         return self.flat
+
+
+class Owner(models.Model):
+    owner = models.CharField('ФИО владельца', max_length=200)
+    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    owner_pure_phone = PhoneNumberField(
+        verbose_name='Нормализованный номер владельца', blank=True, region='RU'
+    )
+    flats = models.ManyToManyField(
+        Flat, verbose_name='Квартиры в собственности', related_name='apartments'
+    )
+
+    def __str__(self):
+        return self.flats
